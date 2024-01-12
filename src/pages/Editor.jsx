@@ -166,6 +166,9 @@ export const Editor = () => {
           <div
             style={{
               border: "1px solid balck",
+              width: '200px',
+              height: '200px',
+              backgroundColor: 'grey',
               borderColor: "black"
             }}
           >
