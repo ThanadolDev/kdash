@@ -176,7 +176,7 @@ export const Dashboard = () => {
 
   return (
     <div className="p-12 ">
-      Dashboard{" "}
+      <p className="text-xl mb-4">Dashboard</p>{" "}
       <div className="flex w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* <DndContext onDragEnd={handleDragEnd}>
         <SortableContext items={chartDivs} strategy={rectSortingStrategy}> */}

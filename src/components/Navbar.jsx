@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { AioutlineMenu } from "react-icons/ai";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsChatLeft } from "react-icons/ri";
@@ -6,6 +6,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../contexts/ContextProvider";
 import { AiOutlineMenu } from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -25,8 +26,24 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 );
 
 export const Navbar = () => {
-  const { activeMenu, setActiveMenu } = useStateContext();
+  const { activeMenu, setActiveMenu,setScreenSize,screenSize } = useStateContext();
+  useEffect(() => {
+    const handleResize = () => setScreenSize(window.innerWidth);
 
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (screenSize <= 900) {
+      setActiveMenu(false);
+    } else {
+      setActiveMenu(true);
+    }
+  }, [screenSize]);
   return (
     <div className="flex justify-between p-2  relative bg-white drop-shadow-sm w-full">
       <NavButton
@@ -37,10 +54,10 @@ export const Navbar = () => {
       ></NavButton>
       <div className="flex">
         <NavButton
-          title="Menu"
-          customFunc={() => setActiveMenu((preActiveMenu) => !preActiveMenu)}
+          // title="Menu"
+          // customFunc={() => setActiveMenu((preActiveMenu) => !preActiveMenu)}
           color="blue"
-          icon={<AiOutlineMenu />}
+          icon={<CgProfile />}
         ></NavButton>
       </div>
     </div>

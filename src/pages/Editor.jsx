@@ -1,11 +1,15 @@
-import React, {useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSortable } from "@dnd-kit/sortable";
 import { Box } from "grommet";
 import { CSS } from "@dnd-kit/utilities";
+import { IoMdAddCircleOutline } from "react-icons/io";
 import ReactApexChart from "react-apexcharts";
+import { useStateContext } from '../contexts/ContextProvider';
+import { Modals } from "../components";
+import { Createchart } from './Createchart';
+
 import {
-  DndContext,
-  closestCenter,
+  DndContext, closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -62,6 +66,19 @@ const chartOptions = {
         },
       },
     },
+    animations: {
+      enabled: false,
+      easing: 'easeinout',
+      speed: 800,
+      animateGradually: {
+        enabled: true,
+        delay: 150
+      },
+      dynamicAnimation: {
+        enabled: true,
+        speed: 350
+      }
+    }
   },
   stroke: {
     curve: "smooth",
@@ -102,6 +119,8 @@ export const Editor = () => {
   const [weatherData, setWeatherData] = useState([]);
   const apiKey = "c1a9ce00ca063b004276bf58a4397140";
   const city = "Bangkok";
+  const { openModal, closeModal, isModalOpen } = useStateContext();
+
   useEffect(() => {
     fetch(
       `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`
@@ -131,14 +150,14 @@ export const Editor = () => {
 
   const handleDragEnd = (event) => {
     setActiveId(null);
-    console.log(event)
+
     const { active, over } = event;
 
     if (active.id !== over.id) {
       setItems((items) => {
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);
-        console.log(oldIndex,newIndex)
+        console.log(oldIndex, newIndex)
         return arrayMove(items, oldIndex, newIndex);
       });
     }
@@ -152,14 +171,14 @@ export const Editor = () => {
       transition,
       isDragging
     } = useSortable({ id: props.id });
-  
+
     const style = {
       transform: CSS.Transform.toString(transform),
       transition,
       zIndex: isDragging ? "100" : "auto",
       opacity: isDragging ? 0.3 : 1
     };
-  
+
     return (
       <div ref={setNodeRef} style={style}  {...listeners} {...attributes}>
         <Box>
@@ -173,7 +192,7 @@ export const Editor = () => {
             }}
           >
             {props.value}
-             {/* <ReactApexChart
+            {/* <ReactApexChart
                     options={chartOptions}
                     series={chartSeries}
                     type={props.value}
@@ -185,39 +204,58 @@ export const Editor = () => {
       </div>
     );
   };
-  
+
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      onDragStart={handleDragStart}
-    >
-      <Box
-        flex={true}
-        wrap={true}
-        direction="row"
-        className='w-full'
-      >
-        <SortableContext items={items} strategy={rectSortingStrategy}>
-          {items.map((ids) => (
-            <SortableItem key={ids.id} id={ids} value={ids.type} />
-          ))}
-          <DragOverlay>
-            {activeId ? (
-              <div
-                style={{
-                  width: "300px",
-                  height: "300px",
-                  backgroundColor: "red"
-                }}
-              ></div>
-            ) : null}
-          </DragOverlay>
-        </SortableContext>
-      </Box>
-    </DndContext>
+    <div className='p-12'>
+      <div>
+        <div className='text-xl mb-4 flex items-center'>See created charts <div className='ml-2 hover:bg-gray-200 rounded-md p-2' onClick={openModal} ><IoMdAddCircleOutline className='text-xl' /></div></div>
+      </div>
+      <div>
+
+        <Modals isOpen={isModalOpen} onClose={closeModal}>
+          <h1 className="text-xl font-bold mb-4">Create charts template</h1>
+          <Createchart />
+          <button onClick={closeModal} className="mt-4 bg-gray-500 text-white p-2 rounded">
+            Close Modal
+          </button>
+        </Modals>
+      </div>
+      <div>
+
+
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
+        >
+          <Box
+            flex={true}
+            wrap={true}
+            direction="row"
+            className='w-full'
+          >
+            <SortableContext items={items} strategy={rectSortingStrategy}>
+              {items.map((ids) => (
+                <SortableItem key={ids.id} id={ids} value={ids.type} />
+              ))}
+              <DragOverlay>
+                {activeId ? (
+                  <div
+                    style={{
+                      width: "300px",
+                      height: "300px",
+                      backgroundColor: "red"
+                    }}
+                  ></div>
+                ) : null}
+              </DragOverlay>
+            </SortableContext>
+          </Box>
+        </DndContext>
+      </div>
+    </div>
   );
-  
+
 }
 

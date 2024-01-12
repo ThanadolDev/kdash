@@ -5,6 +5,8 @@ import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../contexts/ContextProvider";
 import { AiFillDashboard } from "react-icons/ai";
+import { LuGanttChartSquare } from "react-icons/lu";
+import { MdDashboardCustomize } from "react-icons/md";
 import { SiBun } from "react-icons/si";
 export const Sidebar = ({}) => {
   const { activeMenu, setActiveMenu } = useStateContext();
@@ -57,8 +59,8 @@ export const Sidebar = ({}) => {
                 <span className="capitalize ">Dashboard</span>
               </NavLink>
               <NavLink
-                to={`/editor`}
-                key={"Editor"}
+                to={`/editchart`}
+                key={"Editchart"}
                 style={({ isActive }) => ({
                   backgroundColor: isActive ? isActive : "",
                 })}
@@ -66,8 +68,23 @@ export const Sidebar = ({}) => {
                   isActive ? activeLink : normalLink
                 }
               >
-                <AiFillDashboard className="mt-0.5 text-xl"/>
-                <span className="capitalize ">another</span>
+     
+                <LuGanttChartSquare className="mt-0.5 text-xl"/>
+                <span className="capitalize ">Create chart</span>
+              </NavLink>
+              <NavLink
+                to={`/editdash`}
+                key={"Editdash"}
+                style={({ isActive }) => ({
+                  backgroundColor: isActive ? isActive : "",
+                })}
+                className={({ isActive }) =>
+                  isActive ? activeLink : normalLink
+                }
+              >
+     
+                <MdDashboardCustomize className="mt-0.5 text-xl"/>
+                <span className="capitalize ">Add/Edit dashboard</span>
               </NavLink>
             </div>
           </div>

@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react";
 import { FiSettings } from "react-icons/fi";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Button,Chartsheader,Footer,Header,Navbar,Sidebar,UserProfile } from "./components";
+import { Button,Chartsheader,Footer,Header,Navbar,Sidebar,UserProfile,Modals } from "./components";
 
-import { Dashboard, Editor } from "./pages";
+import { Templatedashboard, Dashboard, Editor, Createdashboard } from "./pages";
 import { useStateContext} from './contexts/ContextProvider'
 import { KanbanComponent, ColumnsDirective, ColumnDirective } from "@syncfusion/ej2-react-kanban";
 function App() {
@@ -52,7 +52,9 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard/>} />
               <Route path="/dashboard" element={<Dashboard/>}  />
-              <Route path="/editor" element={<Editor/>}  />
+              <Route path="/editchart" element={<Editor/>}  />
+              <Route path="/editdash" element={<Templatedashboard/>}  />
+              <Route path="/editdash/create" element={<Createdashboard/>}  />
             </Routes>
           </div>
         </div>
